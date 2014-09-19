@@ -8,6 +8,7 @@ import pymongo
 import copy
 
 previous_bold_state = False
+data_dir = "C:\\Users\\tmwsiy\\PycharmProjects\\data\\"
 
 def check_bodmer_begin(state_to_check):
     global previous_bold_state
@@ -18,7 +19,7 @@ def check_bodmer_begin(state_to_check):
 
 def read_chap_verse(chap, verse, dir_prefix='', output_to=sys.stdout):
     global previous_bold_state
-    document = Document(dir_prefix+'Stg7 ' + '%02d' % (chap)+ ' ' + '%02d' %  (verse) +'.docx')
+    document = Document(dir_prefix+ 'PJ ' +  '%02d' % (chap) + ' Stg7fin\\' +'Stg7 ' + '%02d' % (chap)+ ' ' + '%02d' %  (verse) +'.docx')
     doc_string = io.StringIO()
     if output_to is None:
         output_to = doc_string
@@ -33,10 +34,10 @@ def read_chap_verse(chap, verse, dir_prefix='', output_to=sys.stdout):
     return doc_string.getvalue()
 
 def get_chap_verse(chap, verse, dir_prefix=''):
-    return read_chap_verse(chap, verse, dir_prefix='', output_to=None)
+    return read_chap_verse(chap, verse, dir_prefix=data_dir, output_to=None)
 
 def print_chap_verse(chap, verse, dir_prefix=''):
-    read_chap_verse(chap, verse, dir_prefix='', output_to=sys.stdout)
+    read_chap_verse(chap, verse, dir_prefix=data_dir, output_to=sys.stdout)
 
 def split_on_number_boundary(string_to_split):
     m = re.search("\d", string_to_split)
@@ -153,6 +154,11 @@ for verse in range(1,14):
     write_listified_document( intermediate_list, collection,chap,verse)
 chap=2
 for verse in range(1,15):
+    raw_list = get_chap_verse(chap,verse)
+    intermediate_list = listify_apparatus_verse_document(raw_list )
+    write_listified_document( intermediate_list, collection,chap,verse)
+chap=3
+for verse in range(1,8):
     raw_list = get_chap_verse(chap,verse)
     intermediate_list = listify_apparatus_verse_document(raw_list )
     write_listified_document( intermediate_list, collection,chap,verse)
